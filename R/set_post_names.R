@@ -1,4 +1,4 @@
-#
+# 
 #' set_post_names Function
 #'
 #' This function stores the name, email box name, and email domain
@@ -11,14 +11,15 @@
 #' @param email_domain sender email address domain (after the @) for the NNTP From and Message-ID headers
 #' @export
 set_post_names <- function(from_name, email_name, email_domain) {
-
-  nntpr.private$from.name <- from_name
-  nntpr.private$from.email.name <- email_name
-  nntpr.private$from.email.domain <- email_domain
-  nntpr.private$gretmessage <- NULL
-
-  example_from <- str_c("From: ", nntpr.private$from.name, " <", nntpr.private$from.email.name,
-                        "@", nntpr.private$from.email.domain, ">")
-  return(example_from)
-
+    
+    nntpr.private$from.name <- from_name
+    nntpr.private$from.email.name <- email_name
+    nntpr.private$from.email.domain <- email_domain
+    nntpr.private$gretmessage <- NULL
+    
+    example_from <- str_c("From: ", nntpr.private$from.name, " <", nntpr.private$from.email.name, 
+        "@", nntpr.private$from.email.domain, ">")
+    return(example_from)
+    
 }
+

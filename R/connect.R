@@ -1,4 +1,4 @@
-#
+# 
 #' connect Function
 #'
 #' This function creates an NNTP connection object.
@@ -13,23 +13,23 @@
 #'
 #' @export
 connect <- function(nntp_server, nntp_port, user_name, user_password, read_only) {
-  retmessage <- NULL
-  svconn <- NULL
-
-  tryresult <- try(py_run_string(str_c("svconn = r.nntplib.NNTP('", nntp_server,
-                                       "', '", nntp_port, "', '", user_name, "', '", user_password, "', ", read_only,
-                                       ")")), FALSE)
-
-  if (str_sub(tryresult, 1, 5) != "Error") {
-    py_run_string("welcmsg = svconn.getwelcome()")
-    svconn <- py$svconn
-    retmessage <- py$welcmsg
-  } else {
-    retmessage <- tryresult
-  }
-
-  nntpr.private$gsvconn <- svconn
-  nntpr.private$gretmessage <- retmessage
-
-  return(retmessage)
+    retmessage <- NULL
+    svconn <- NULL
+    
+    tryresult <- try(py_run_string(str_c("svconn = r.nntplib.NNTP('", nntp_server, 
+        "', '", nntp_port, "', '", user_name, "', '", user_password, "', ", read_only, 
+        ")")), FALSE)
+    
+    if (str_sub(tryresult, 1, 5) != "Error") {
+        py_run_string("welcmsg = svconn.getwelcome()")
+        svconn <- py$svconn
+        retmessage <- py$welcmsg
+    } else {
+        retmessage <- tryresult
+    }
+    
+    nntpr.private$gsvconn <- svconn
+    nntpr.private$gretmessage <- retmessage
+    
+    return(retmessage)
 }

@@ -1,4 +1,4 @@
-#
+# 
 #' group Function
 #'
 #' This function gets group information and sets the group for nntplib methods operating against articles.
@@ -8,10 +8,10 @@
 #' @param groupname usenet group name
 #' @export
 group <- function(groupname) {
-  py$svconn <- nntpr.private$gsvconn
-
-  py_run_string(str_c("groupinfo = svconn.group('", groupname, "')"))
-  nntpr.private$ggroupinfovector <- unlist(str_split(py$groupinfo[1], " "))
-  return(nntpr.private$ggroupinfovector)
-
+    py$svconn <- nntpr.private$gsvconn
+    
+    py_run_string(str_c("groupinfo = svconn.group('", groupname, "')"))
+    nntpr.private$ggroupinfovector <- unlist(str_split(py$groupinfo[1], " "))
+    return(nntpr.private$ggroupinfovector)
+    
 }

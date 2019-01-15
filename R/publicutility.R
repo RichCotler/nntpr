@@ -1,4 +1,4 @@
-#
+# 
 #' publicutility Function
 #'
 #' This function provides a public method to
@@ -16,29 +16,29 @@
 #' @param utility_to_call the function you want to invoke
 #' @export
 publicutility <- function(utility_to_call) {
-  retvariable <- NULL
-  retmessage <- nntpr.private$gretmessage  # store previous contents to return if not changed
-
-  if (is.null(utility_to_call)) {
-    retmessage <- c("Error: Utility to call not specified.")
-  } else {
-    valid_utils <- c("help", "retmessage", "artinfo", "groupinfo", "exectime")
-    if (!is.element(utility_to_call, valid_utils)) {
-      retmessage <- str_c("Error: ", utility_to_call, " is not a valid utility to call value.")
-    } else if (utility_to_call == "retmessage") {
-      retvariable <- getretmessage()
-    } else if (utility_to_call == "artinfo") {
-      retvariable <- getartinfo()
-    } else if (utility_to_call == "groupinfo") {
-      retvariable <- getgroupinfo()
-    } else if (utility_to_call == "exectime") {
-      retvariable <- getexectime()
+    retvariable <- NULL
+    retmessage <- nntpr.private$gretmessage  # store previous contents to return if not changed
+    
+    if (is.null(utility_to_call)) {
+        retmessage <- c("Error: Utility to call not specified.")
     } else {
-      retvariable <- str_c("Valid utility to call values: ", paste(valid_utils,
-                                                                   collapse = ", "), ".")  # fall through to help function
+        valid_utils <- c("help", "retmessage", "artinfo", "groupinfo", "exectime")
+        if (!is.element(utility_to_call, valid_utils)) {
+            retmessage <- str_c("Error: ", utility_to_call, " is not a valid utility to call value.")
+        } else if (utility_to_call == "retmessage") {
+            retvariable <- getretmessage()
+        } else if (utility_to_call == "artinfo") {
+            retvariable <- getartinfo()
+        } else if (utility_to_call == "groupinfo") {
+            retvariable <- getgroupinfo()
+        } else if (utility_to_call == "exectime") {
+            retvariable <- getexectime()
+        } else {
+            retvariable <- str_c("Valid utility to call values: ", paste(valid_utils, 
+                collapse = ", "), ".")  # fall through to help function
+        }
     }
-  }
-
-  nntpr.private$gretmessage <- retmessage
-  return(retvariable)
+    
+    nntpr.private$gretmessage <- retmessage
+    return(retvariable)
 }

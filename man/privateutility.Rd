@@ -26,6 +26,8 @@ This function provides private utility functions
 \item adjust_article_range - returns a vector with original first and last article numbers or adjusted value(s) if a requested number falls outside of the group's actual range
 \item execute_listhdr_call - executes validated nntplib xhdr or xover call with appropriate passed parameters
 \item is.wholenumber - tests a variable to see if it is numeric and is an integer
+\item propsamplesize - calculates proportional sample size for systematic sampling of newsgroup article information
+\item samplegroup - creates a sample set data frame of article numbers, postdates, counts for group volume plotting across group dates
 }
 }
 \keyword{internal}

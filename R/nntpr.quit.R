@@ -1,4 +1,4 @@
-#
+# 
 #' nntpr.quit Function
 #'
 #' This function disconnects the NNTP session associated with a connection object.
@@ -7,15 +7,15 @@
 #'
 #' @export
 nntpr.quit <- function() {
-  retmessage <- NULL
-
-  if (!is.null(nntpr.private$gsvconn)) {
-    py$svconn <- nntpr.private$gsvconn
-    retmessage <- py_eval("svconn.quit()")
-  } else {
-    retmessage <- c("nothing to quit from")
-  }
-
-  nntpr.private$gretmessage <- retmessage
-  return(retmessage)
+    retmessage <- NULL
+    
+    if (!is.null(nntpr.private$gsvconn)) {
+        py$svconn <- nntpr.private$gsvconn
+        retmessage <- py_eval("svconn.quit()")
+    } else {
+        retmessage <- c("nothing to quit from")
+    }
+    
+    nntpr.private$gretmessage <- retmessage
+    return(retmessage)
 }

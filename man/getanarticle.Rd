@@ -12,7 +12,7 @@ getanarticle(article_string, request_type)
 \item{request_type}{the nntplib method to execute (article, head, body)}
 }
 \description{
-This function retrieves a single article header and body,
+This function retrieves a single article stat, header and body,
 header, or body (depending on request type parameter)
 from the group set by the last group() call.
 The function returns 4 item list with:
@@ -20,7 +20,7 @@ The function returns 4 item list with:
 \item request summary with req number, article number, and message id
 \item article number string
 \item message id
-\item vector containing header, body, or header and body
+\item vector containing article number/id, header, body, or header and body
 }
 or and error message string if applicable.
 }
