@@ -1,4 +1,4 @@
-# 
+#
 #' nntpr Function
 #'
 #' This function initializes the R reticulate environment for the rest of nntpr
@@ -11,7 +11,7 @@
 #' @import readr
 #' @import R.utils
 #' @import stats
-#' @importFrom htmltools includeCSS
+#' @import htmltools
 #' @import htmlwidgets
 #' @import timevis
 #' @docType package
@@ -33,5 +33,5 @@ nntpr.private$gposteof <- "\\xc3\\xa9."  # eof sequence to indicate end of text 
 
 .onLoad <- function(libname, pkgname) {
     nntplib <<- reticulate::import("nntplib")
-    
+
 }

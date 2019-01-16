@@ -26,6 +26,7 @@
 groupdatevolume <- function(runmode = NULL) {
     
     options(stringsAsFactors = FALSE)
+    groupinfo <- nntpr.private$ggroupinfovector
     # collect basic sample points and article counts
     if (!is.null(runmode)) {
         runmode <- "test"
@@ -76,8 +77,10 @@ groupdatevolume <- function(runmode = NULL) {
         setOptions(list(min = df2plot$start[1], max = Sys.Date(), type = "range")) %>% 
         setGroups(groups.df[5:1, ])
     
-    timeline_plot_widget <- prependContent(timeline_plot_widget, includeCSS(system.file("css/style.css", 
-        package = "nntpr")))
+    timeline_mod_taglist <- tagList(includeCSS(system.file("css/style.css", package = "nntpr")), 
+        tags$h2("Average Posts Per Day for Sample Periods", align = "center"), tags$h3(groupinfo[5], 
+            align = "center"), tags$h6("quartile", align = "left"))
+    timeline_plot_widget <- prependContent(timeline_plot_widget, timeline_mod_taglist)
     
     return(timeline_plot_widget)
     

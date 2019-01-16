@@ -2,7 +2,7 @@ Package: nntpr
 Type: Package
 Title: Package providing an R interface to python nntplib functions via reticulate
 Description: Covering several personal objectives in one project, nntpr is a package with public functions which call the python 2.x nntplib methods. The idea started with a lack of good NNTP clients (IMHO) for my Mac. I looked into what I may be able to cook up easily and found nothing available in R to interface with NNTP. Here was an opportunity to try an create something marginally useful, while writing my first R package, learning more about the NNTP protocol, and trying the reticulate package (calling python from R) for the first time. All of that in one fun project, nntpr.
-Version: 1.6.0
+Version: 1.6.1
 Author: Rich Cotler <richcotler@optimum.net>
 Maintainer: Rich Cotler <richcotler@optimum.net>
 Depends: R (>= 3.5.0), reticulate

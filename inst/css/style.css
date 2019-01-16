@@ -1,2 +1,5 @@
+h2 { text-shadow: 3px 2px lightgray; }
+h3 { font-style: italic; }
+#htmlwidget_container { overflow: scroll }
 .vis-item .vis-item-overflow {  overflow: visible; }
 .vis-item-range .vis-item-overflow {  overflow: visible; }
