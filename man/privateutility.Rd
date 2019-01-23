@@ -20,7 +20,7 @@ This function provides private utility functions
 \item set_temptext_filename - returns temporary text file using message_id UUID
 \item set_from_header - returns From header line constructed from stored name, email name, email domain values
 \item set_messageid_header - returns Message-ID header line constructed from supplied message_id and stored email domain
-\item count_lines - returns the numnber of lines in the supplied text file (with path)
+\item count_lines - returns the number of lines in the supplied text file (with path)
 \item validate_list_call - returns an error message if a list function is called without a group set or with first > last article numbers
 \item validate_header_field - returns an error message if an invalid header field name is requested
 \item adjust_article_range - returns a vector with original first and last article numbers or adjusted value(s) if a requested number falls outside of the group's actual range
@@ -28,6 +28,8 @@ This function provides private utility functions
 \item is.wholenumber - tests a variable to see if it is numeric and is an integer
 \item propsamplesize - calculates proportional sample size for systematic sampling of newsgroup article information
 \item samplegroup - creates a sample set data frame of article numbers, postdates, counts for group volume plotting across group dates
+\item samplesubjects - creates a sample set data frame of article subjects for a set of article numbers for processing to produce a term frequency wordcloud
+\item subjects2wordcloud - takes the subject fields in the groupdatevolume sample and produces a wordcloud on term freq
 }
 }
 \keyword{internal}

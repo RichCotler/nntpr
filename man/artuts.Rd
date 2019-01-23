@@ -7,7 +7,7 @@
 artuts()
 }
 \description{
-This is a convience function that returns a list
+This is a convenience function that returns a list
 with article level information from the nttpr.private private utilities
 for return message, execution time stats, and article info
 with starting and ending article numbers and their respective article dates.

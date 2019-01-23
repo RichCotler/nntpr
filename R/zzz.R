@@ -4,6 +4,7 @@
 #' This function initializes the R reticulate environment for the rest of nntpr
 #' @keywords internal
 #' @import reticulate
+#' @importFrom plyr llply
 #' @importFrom purrr reduce
 #' @import stringr
 #' @import rlist
@@ -14,6 +15,9 @@
 #' @import htmltools
 #' @import htmlwidgets
 #' @import timevis
+#' @import tm
+#' @import wfindr
+#' @import wordcloud2
 #' @docType package
 #' @name nntpr
 #' @export

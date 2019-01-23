@@ -14,7 +14,7 @@
 #' \item set_temptext_filename - returns temporary text file using message_id UUID
 #' \item set_from_header - returns From header line constructed from stored name, email name, email domain values
 #' \item set_messageid_header - returns Message-ID header line constructed from supplied message_id and stored email domain
-#' \item count_lines - returns the numnber of lines in the supplied text file (with path)
+#' \item count_lines - returns the number of lines in the supplied text file (with path)
 #' \item validate_list_call - returns an error message if a list function is called without a group set or with first > last article numbers
 #' \item validate_header_field - returns an error message if an invalid header field name is requested
 #' \item adjust_article_range - returns a vector with original first and last article numbers or adjusted value(s) if a requested number falls outside of the group's actual range
@@ -22,6 +22,8 @@
 #' \item is.wholenumber - tests a variable to see if it is numeric and is an integer
 #' \item propsamplesize - calculates proportional sample size for systematic sampling of newsgroup article information
 #' \item samplegroup - creates a sample set data frame of article numbers, postdates, counts for group volume plotting across group dates
+#' \item samplesubjects - creates a sample set data frame of article subjects for a set of article numbers for processing to produce a term frequency wordcloud
+#' \item subjects2wordcloud - takes the subject fields in the groupdatevolume sample and produces a wordcloud on term freq
 #' }
 #' @keywords internal
 #'
@@ -30,38 +32,38 @@ privateutility <- function() {
 
 }
 
-# returns contents of nntpr.private$gretmessage to caller
+# Returns contents of nntpr.private$gretmessage to caller
 getretmessage <- function() {
     retmessage <- nntpr.private$gretmessage
     return(retmessage)
 }
 
-# returns a list with listarticles first and last article information to caller
+# Returns a list with listarticles first and last article information to caller
 getartinfo <- function() {
     artinfolist <- list(nntpr.private$gfirstartinfo, nntpr.private$glastartinfo)
     return(artinfolist)
 }
 
-# returns Group information vector (response, count, first, last, name) to caller
+# Returns Group information vector (response, count, first, last, name) to caller
 getgroupinfo <- function() {
     groupinfovector <- nntpr.private$ggroupinfovector
     return(groupinfovector)
 }
 
-# returns last stored execution time info saved by xhdr, xover, and group list
+# Returns last stored execution time info saved by xhdr, xover, and group list
 # calls as proc.time
 getexectime <- function() {
     execproctime <- nntpr.private$gexectime
     return(execproctime)
 }
 
-# returns a string with the rounded elapsed time from getexectime
+# Returns a string with the rounded elapsed time from getexectime
 getclocktime <- function() {
     clocktimestring <- as.character(round(publicutility("exectime")[[3]], digits = 3))
     return(clocktimestring)
 }
 
-# writes text message to be posted to a temporary file named using message_id
+# Writes text message to be posted to a temporary file named using message_id
 # UUID returns temporary file line count
 write_temptext <- function(message_id, message_vector) {
     posttempfile <- set_temptext_filename(message_id)
@@ -70,19 +72,19 @@ write_temptext <- function(message_id, message_vector) {
     return(lineswritten)
 }
 
-# cleans up temporary text message file after posting
+# Cleans up temporary text message file after posting
 delete_temptext <- function(message_id) {
     resbool <- file.remove(set_temptext_filename(message_id))
     return(resbool)
 }
 
-# formats and returns temporary text message file name using message_id UUID
+# Formats and returns temporary text message file name using message_id UUID
 set_temptext_filename <- function(message_id) {
     tmp_filename <- str_c("./", message_id, ".tmp.txt")
     return(tmp_filename)
 }
 
-# constructs and returns From header line using name, email name, and email
+# Constructs and returns From header line using name, email name, and email
 # domain in nntpr.private
 set_from_header <- function() {
     from_header <- str_c("From: ", nntpr.private$from.name, " <", nntpr.private$from.email.name,
@@ -98,13 +100,13 @@ set_messageid_header <- function(message_id) {
     return(messageid_header)
 }
 
-# returns the number of lines in the text file at the supplied path
+# Returns the number of lines in the text file at the supplied path
 count_lines <- function(filename) {
     text_lines <- countLines(filename)
     return(text_lines)
 }
 
-# returns an error message if no group is set or if first article number > last
+# Returns an error message if no group is set or if first article number > last
 # article number
 validate_list_call <- function(first_article_string, last_article_string, timeout_seconds) {
     retmessage <- NULL
@@ -119,7 +121,7 @@ validate_list_call <- function(first_article_string, last_article_string, timeou
     return(retmessage)
 }
 
-# return an error message if an invalid header field value is requested
+# Returns an error message if an invalid header field value is requested
 validate_header_field <- function(header_field_name) {
     retmessage <- NULL
 
@@ -133,7 +135,7 @@ validate_header_field <- function(header_field_name) {
     return(retmessage)
 }
 
-# returns a vector with first and last article numbers, retaining the initial
+# Returns a vector with first and last article numbers, retaining the initial
 # value or adjusted value if a number falls outside of the actual range for the
 # group
 adjust_article_range <- function(first_article_string, last_article_string) {
@@ -149,7 +151,7 @@ adjust_article_range <- function(first_article_string, last_article_string) {
 
 }
 
-# run a call to xhdr or xover depending on requested function if xhdr, call_parm1
+# Runs a call to xhdr or xover depending on requested function if xhdr, call_parm1
 # is header field name, call_parm2 is article_range if xover, call_parm1 is
 # first_article_string, call_parm2 is last_article_string
 execute_listhdr_call <- function(requested_function, call_parm1, call_parm2, filter_term_string = NULL) {
@@ -175,7 +177,7 @@ execute_listhdr_call <- function(requested_function, call_parm1, call_parm2, fil
     return(retvariable)
 }
 
-# function based on example in R Documentation for ingeter {base} with addition
+# Function based on example in R Documentation for integer {base} with addition
 # of numeric check to bypass calculations if the variable passed is not numeric
 is.wholenumber <- function(variable_to_test) {
     returnbool <- NULL
@@ -187,7 +189,7 @@ is.wholenumber <- function(variable_to_test) {
     return(returnbool)
 }
 
-# function returning proportional sample size (based on surveysystem.com formula)
+# Function returning proportional sample size (based on surveysystem.com formula)
 # using group size, a confidence interval of 10, and confidence level of 95%.
 # groupsize - total number of articles in the newsgroup
 # marginoferror - confidence interval (c), % / 100
@@ -200,18 +202,21 @@ propsamplesize <- function(groupsize, marginoferror, ppct = 0.5, confidencelvl =
     return(propsamplesize)
 }
 
-# function returning a data frame of article numbers and normalized post dates,
-# and for convenience an article count since previous sample point for a
-# systematic sampling of articles from the oldest to newest available posts of
-# the target newsgroup.  using optional parameter runmode, which can be NULL
-# (default) or "test".  a null runmode calls propsamplesize() with a margin of
-# error set to 5%.  runmode test calls propsamplesize() with a margin of error
-# set to 20%, which creates a smaller sample set.  The sample set (ss) is
-# collected and processed as lists, then molded into the returned data frame.
-samplegroup <- function(runmode = NULL) {
+# Function returning a data frame of article numbers, normalized post dates, and an article count since
+# previous sample point for a sampling of articles from the oldest to newest available posts of the target
+# newsgroup.
+# If testmode is FALSE (default), a confidence interval of 5% is provided to the proportional sample size
+# calculation function (propsamplesize).
+# If testmode is requested (testmode = TRUE), a confidence interval of 20% is provided to the sample size
+# calculation, which returns a significantly smaller sample size.
+#
+# The article numbers of the sample points are calculated based on newsgroup size, starting article number,
+# and sample interval (newsgroup size / sample size). The post dates are cleaned up, and the number of posts
+# between sample points is calculated.  These are formed into a data frame and returned to the caller.
+samplegroup <- function(testmode) {
     groupinfo <- nntpr.private$ggroupinfovector
     daysvector <- c("Mon, ", "Tue, ", "Wed, ", "Thu, ", "Fri, ", "Sat, ", "Sun, ")
-    if (!is.null(runmode)) {
+    if (testmode) {
         marginoferror <- 0.2
     } else {
         marginoferror <- 0.05
@@ -230,21 +235,23 @@ samplegroup <- function(runmode = NULL) {
     sslist <- list(article = samplearticles)
 
     # collect and normalize article post dates for the sample set
-    sslist$articledatetime <- lapply(1:propsssize, function(x) {
+    print("collecting sample set post dates...")
+    sslist$articledatetime <- llply(1:propsssize, function(x) {
         listheaderfield("date", as.character(sslist$article[x]), as.character(sslist$article[x]),
             0)[[1]][[2]]
-    })
+    }, .progress = "text")
     # change GMT abbrev to TZ offset number and convert to date class
-    sslist$articledatetime <- lapply(1:propsssize, function(x) {
+    print("formatting sample set post dates...")
+    sslist$articledatetime <- llply(1:propsssize, function(x) {
         if (any(str_detect(sslist$articledatetime[x], daysvector))) {
             strptime(str_replace(sslist$articledatetime[x], "GMT", "+0000"), format = "%a, %d %b %Y %R:%S %z")
         } else {
             strptime(str_replace(sslist$articledatetime[x], "GMT", "+0000"), format = "%d %b %Y %R:%S %z")
         }
-    })
+    }, .progress = "text")
 
     # verify the articles count between sample points
-    sslist$articlecount <- lapply(1:propsssize, function(x) {
+    sslist$articlecount <- llply(1:propsssize, function(x) {
         if (x == 1) {
             0
         } else {
@@ -252,9 +259,51 @@ samplegroup <- function(runmode = NULL) {
         }
     })
 
-    ssdataframe <- data.frame(article = sslist$article, articledatetime = Reduce(c,
-        sslist$articledatetime), articlecount = Reduce(c, sslist$articlecount))
+    ssdataframe <- data.frame(article = sslist$article,
+                              articledatetime = Reduce(c, sslist$articledatetime),
+                              articlecount = Reduce(c, sslist$articlecount)
+                              )
     return(ssdataframe)
 
 }
+
+# Function returning a vector of article subjects based on the article numbers of the sample points
+# created by the samplegroup function call.
+samplesubject <- function(samplearticles) {
+
+  # collect subject entries for the sample set
+  print("collecting sample set subject fields...")
+  sslist <- list(article = samplearticles)
+  sslist$subject <- llply(1:length(samplearticles), function(x) {
+    listheaderfield("subject", as.character(sslist$article[x]), as.character(sslist$article[x]),
+                    0)[[1]][[2]]
+  }, .progress = "text")
+
+  articlesubjects <- Reduce(c, sslist$subject)
+  return(articlesubjects)
+
+}
+
+# Function processing the subject fields collected in the groupdatevolume sampling, returning a wordcloud2
+# plot of term frequency.
+# The subject fields are cleansed of special characters, then processed using tm's termFreq function. tm::termFreq
+# converts everything to lower case, removes punctuation, numbers, stopwords, and any word not found in the
+# wfindr::words.eng dictionary vector (263000+ words).  While the filter against the dictionary may severely
+# constrain the resulting words to plot, it is implemented as a balance to frequent non-language elements
+# prevalent in the subject fields of some newsgroups.
+subjects2wordcloud <- function(subjectvector) {
+  # remove special characters before attempting to process subject fields
+  subjectvector <- gsub("[^[:alnum:][:blank:]?&/\\-]", "", subjectvector)
+
+  termfreqvector  <- termFreq(subjectvector,
+                control = list(removePunctuation = TRUE,
+                               removeNumbers = TRUE,
+                               stopwords = TRUE,
+                               dictionary = wfindr::words.eng))
+
+  termfreqdataframe <- data.frame(word = names(termfreqvector), freq = termfreqvector)
+
+  return(wordcloud2(data = termfreqdataframe, minSize = 3, rotateRatio = 0.4, color = "random-dark"))
+}
+
 
