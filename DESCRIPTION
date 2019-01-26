@@ -8,7 +8,7 @@ Description: Covering several personal objectives in one fun project, nntpr is a
       learn how to integrate python code and objects with R
     The result is this package. It's a work in progress - I will add features and documentation as time permits.
     For more information on nntpr, please refer to the function documentation and the README.
-Version: 1.7.0
+Version: 1.8.0
 Author: Rich Cotler <richcotler@optimum.net>
 Maintainer: Rich Cotler <richcotler@optimum.net>
 Depends: R (>= 3.5.0), reticulate
@@ -26,7 +26,8 @@ Imports:
     tm,
     uuid,
     wfindr,
-    wordcloud2
+    wordcloud2,
+    utils
 License: file LICENSE
 Encoding: UTF-8
 Language: en-US

@@ -21,6 +21,7 @@
 #' \item execute_listhdr_call - executes validated nntplib xhdr or xover call with appropriate passed parameters
 #' \item is.wholenumber - tests a variable to see if it is numeric and is an integer
 #' \item propsamplesize - calculates proportional sample size for systematic sampling of newsgroup article information
+#' \item sampleheaderfield - called from inside list apply loop, calls header retrieval with error handling and retry logic
 #' \item samplegroup - creates a sample set data frame of article numbers, postdates, counts for group volume plotting across group dates
 #' \item samplesubjects - creates a sample set data frame of article subjects for a set of article numbers for processing to produce a term frequency wordcloud
 #' \item subjects2wordcloud - takes the subject fields in the groupdatevolume sample and produces a wordcloud on term freq
@@ -151,7 +152,7 @@ adjust_article_range <- function(first_article_string, last_article_string) {
 
 }
 
-# Runs a call to xhdr or xover depending on requested function if xhdr, call_parm1
+# Runs a call to xhdr or xover depending on requested function if xhdr, call_parm
 # is header field name, call_parm2 is article_range if xover, call_parm1 is
 # first_article_string, call_parm2 is last_article_string
 execute_listhdr_call <- function(requested_function, call_parm1, call_parm2, filter_term_string = NULL) {
@@ -202,6 +203,32 @@ propsamplesize <- function(groupsize, marginoferror, ppct = 0.5, confidencelvl =
     return(propsamplesize)
 }
 
+# Function to handle collection of header fields for article from the sample set,
+# with error handling and retry logic.  This is for the situation where a call to get
+# the header field has a problem and doesn't return a proper field, causing a subscript out
+# of bounds error.  Subsequent retries of the same article header often clear the issue.
+# The article number to sample is passed from the caller
+# The date field is default (subjectfield = FALSE)
+# The subject field is returned if called with subjectfield = TRUE
+sampleheaderfield <- function(article, subjectfield = FALSE) {
+  if(subjectfield) { hdrfield <- "subject" } else { hdrfield <- "date" }
+  articleheaderfield <- NULL
+  maxRetries <- 10
+  retryCount <- 0
+
+  while(retryCount < maxRetries) {
+      rawheaderfield <-
+        listheaderfield(hdrfield, as.character(article), as.character(article), 0)
+      if(!is.atomic(rawheaderfield)) {
+        articleheaderfield <- rawheaderfield[[1]][[2]]
+        retryCount <- maxRetries
+      }
+      retryCount <- retryCount + 1
+  }
+
+  return(articleheaderfield)
+}
+
 # Function returning a data frame of article numbers, normalized post dates, and an article count since
 # previous sample point for a sampling of articles from the oldest to newest available posts of the target
 # newsgroup.
@@ -235,13 +262,13 @@ samplegroup <- function(testmode) {
     sslist <- list(article = samplearticles)
 
     # collect and normalize article post dates for the sample set
-    print("collecting sample set post dates...")
+    options(error=recover)
+
+    cat("collecting sample set post dates...", "\n")
     sslist$articledatetime <- llply(1:propsssize, function(x) {
-        listheaderfield("date", as.character(sslist$article[x]), as.character(sslist$article[x]),
-            0)[[1]][[2]]
-    }, .progress = "text")
+            sampleheaderfield(sslist$article[x]) }, .progress = "text")
     # change GMT abbrev to TZ offset number and convert to date class
-    print("formatting sample set post dates...")
+    cat("formatting sample set post dates...", "\n")
     sslist$articledatetime <- llply(1:propsssize, function(x) {
         if (any(str_detect(sslist$articledatetime[x], daysvector))) {
             strptime(str_replace(sslist$articledatetime[x], "GMT", "+0000"), format = "%a, %d %b %Y %R:%S %z")
@@ -272,12 +299,10 @@ samplegroup <- function(testmode) {
 samplesubject <- function(samplearticles) {
 
   # collect subject entries for the sample set
-  print("collecting sample set subject fields...")
+  cat("collecting sample set subject fields...", "\n")
   sslist <- list(article = samplearticles)
   sslist$subject <- llply(1:length(samplearticles), function(x) {
-    listheaderfield("subject", as.character(sslist$article[x]), as.character(sslist$article[x]),
-                    0)[[1]][[2]]
-  }, .progress = "text")
+    sampleheaderfield(sslist$article[x], subjectfield = TRUE) }, .progress = "text")
 
   articlesubjects <- Reduce(c, sslist$subject)
   return(articlesubjects)
@@ -285,13 +310,13 @@ samplesubject <- function(samplearticles) {
 }
 
 # Function processing the subject fields collected in the groupdatevolume sampling, returning a wordcloud2
-# plot of term frequency.
+# plot of term frequency.  The wordcloud2 minSize setting is passed from the caller.
 # The subject fields are cleansed of special characters, then processed using tm's termFreq function. tm::termFreq
 # converts everything to lower case, removes punctuation, numbers, stopwords, and any word not found in the
 # wfindr::words.eng dictionary vector (263000+ words).  While the filter against the dictionary may severely
 # constrain the resulting words to plot, it is implemented as a balance to frequent non-language elements
 # prevalent in the subject fields of some newsgroups.
-subjects2wordcloud <- function(subjectvector) {
+subjects2wordcloud <- function(subjectvector, minSize) {
   # remove special characters before attempting to process subject fields
   subjectvector <- gsub("[^[:alnum:][:blank:]?&/\\-]", "", subjectvector)
 
@@ -303,7 +328,7 @@ subjects2wordcloud <- function(subjectvector) {
 
   termfreqdataframe <- data.frame(word = names(termfreqvector), freq = termfreqvector)
 
-  return(wordcloud2(data = termfreqdataframe, minSize = 3, rotateRatio = 0.4, color = "random-dark"))
+  return(wordcloud2(data = termfreqdataframe, minSize = minSize, rotateRatio = 0.4, color = "random-dark"))
 }
 
 

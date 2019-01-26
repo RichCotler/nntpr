@@ -4,12 +4,14 @@
 \alias{groupdatevolume}
 \title{groupdatevolume Function}
 \usage{
-groupdatevolume(testmode = FALSE, wordcloud = FALSE)
+groupdatevolume(testmode = FALSE, wordcloud = FALSE, minSize = 3)
 }
 \arguments{
 \item{testmode}{optional parameter, set to TRUE to request a smaller sample set for testing purposes}
 
 \item{wordcloud}{optional parameter, set to TRUE to request a wordcloud2 plot of words from sampled subject fields}
+
+\item{minSize}{optional parameter, wordcloud2 setting overide with default of 3. Ignored unless wordcloud = TRUE.}
 }
 \description{
 This function provides a timevis timeline plot, providing an overview of a newsgroup's

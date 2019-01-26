@@ -27,6 +27,7 @@ This function provides private utility functions
 \item execute_listhdr_call - executes validated nntplib xhdr or xover call with appropriate passed parameters
 \item is.wholenumber - tests a variable to see if it is numeric and is an integer
 \item propsamplesize - calculates proportional sample size for systematic sampling of newsgroup article information
+\item sampleheaderfield - called from inside list apply loop, calls header retrieval with error handling and retry logic
 \item samplegroup - creates a sample set data frame of article numbers, postdates, counts for group volume plotting across group dates
 \item samplesubjects - creates a sample set data frame of article subjects for a set of article numbers for processing to produce a term frequency wordcloud
 \item subjects2wordcloud - takes the subject fields in the groupdatevolume sample and produces a wordcloud on term freq

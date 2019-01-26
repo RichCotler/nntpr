@@ -18,6 +18,7 @@
 #' @import tm
 #' @import wfindr
 #' @import wordcloud2
+#' @importFrom utils recover
 #' @docType package
 #' @name nntpr
 #' @export

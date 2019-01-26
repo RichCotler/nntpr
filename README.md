@@ -40,6 +40,7 @@ select a newsgroup to examine
 which returns
 
 `[1] "211"              "536051"           "2"                "536052"           "comp.lang.python"`  
+
 The group information vector (above) contains:
 
 	nntp server response (211)  
@@ -59,5 +60,15 @@ Here's an example of groupdatevolume function reports for comp.lang.python:
 
 `myreports[[2]]`
 ![](./inst/media/groupdatevolumerpt2.jpg)
+
+The option to override the wordcloud2 minSize parameter has been added, with a default value of 3.  minSize is ignored if wordcloud isn't requested, and set to the default if a non-integer minSize is specified.
+
+`minsize1 <- groupdatevolume(wordcloud = TRUE, minSize = 1)`   
+`minsize1[[2]]`   
+![](./inst/media/wordcloud2ms1.jpg)
+
+`minsize10 <- groupdatevolume(wordcloud = TRUE, minSize = 10)`   
+`minsize10[[2]]`   
+![](./inst/media/wordcloud2ms10.jpg)
 
 This is a work in progress.  More functionality and documentation as time permits.
