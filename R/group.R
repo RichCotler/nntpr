@@ -8,10 +8,15 @@
 #' @param groupname usenet group name
 #' @export
 group <- function(groupname) {
-    py$svconn <- nntpr.private$gsvconn
+    nntpr.private$ggroupinfovector <- NULL
     
-    py_run_string(str_c("groupinfo = svconn.group('", groupname, "')"))
-    nntpr.private$ggroupinfovector <- unlist(str_split(py$groupinfo[1], " "))
+    cmd2run <- str_c("svconn.group('", groupname, "')")
+    groupinfo <- call2python(cmd2run)
+    if (!is.null(groupinfo)) {
+        nntpr.private$ggroupinfovector <- unlist(str_split(groupinfo[1], 
+            " "))
+    }
+    
     return(nntpr.private$ggroupinfovector)
-    
 }
+

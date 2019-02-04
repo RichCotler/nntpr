@@ -10,27 +10,28 @@ privateutility()
 This function provides private utility functions
  used by other nntpr functions
 \itemize{
-\item getretmessage - global retmessage retrieval
-\item getartinfo - return list with first and last article information stored by listartheader and listheaderfield
-\item getgroupinfo - return Group information vector (response, count, first, last, name) stored by group
-\item getexectime - return last stored execution time info (proc.time) from group list, xover, and xhdr calls
-\item getclocktime - return a string with the rounded elapsed time from getexectime
-\item write_temptext - writes fully constructed text message vector to temporary file for posting
-\item delete_temptext - cleans up temporary text file after posting
-\item set_temptext_filename - returns temporary text file using message_id UUID
-\item set_from_header - returns From header line constructed from stored name, email name, email domain values
-\item set_messageid_header - returns Message-ID header line constructed from supplied message_id and stored email domain
-\item count_lines - returns the number of lines in the supplied text file (with path)
-\item validate_list_call - returns an error message if a list function is called without a group set or with first > last article numbers
-\item validate_header_field - returns an error message if an invalid header field name is requested
 \item adjust_article_range - returns a vector with original first and last article numbers or adjusted value(s) if a requested number falls outside of the group's actual range
+\item call2python - invoke reticulate functions to run python commands with exception handling
+\item count_lines - returns the number of lines in the supplied text file (with path)
+\item delete_temptext - cleans up temporary text file after posting
 \item execute_listhdr_call - executes validated nntplib xhdr or xover call with appropriate passed parameters
+\item getartinfo - return list with first and last article information stored by listartheader and listheaderfield
+\item getclocktime - return a string with the rounded elapsed time from getexectime
+\item getexectime - return last stored execution time info (proc.time) from group list, xover, and xhdr calls
+\item getgroupinfo - return Group information vector (response, count, first, last, name) stored by group
+\item getretmessage - global retmessage retrieval
 \item is.wholenumber - tests a variable to see if it is numeric and is an integer
 \item propsamplesize - calculates proportional sample size for systematic sampling of newsgroup article information
-\item sampleheaderfield - called from inside list apply loop, calls header retrieval with error handling and retry logic
 \item samplegroup - creates a sample set data frame of article numbers, postdates, counts for group volume plotting across group dates
-\item samplesubjects - creates a sample set data frame of article subjects for a set of article numbers for processing to produce a term frequency wordcloud
+\item sampleheaderfield - called from inside list apply loop, calls header retrieval with error handling and retry logic
+\item samplesubject - creates a sample set data frame of article subjects for a set of article numbers for processing to produce a term frequency wordcloud
+\item set_from_header - returns From header line constructed from stored name, email name, email domain values
+\item set_messageid_header - returns Message-ID header line constructed from supplied message_id and stored email domain
+\item set_temptext_filename - returns temporary text file using message_id UUID
 \item subjects2wordcloud - takes the subject fields in the groupdatevolume sample and produces a wordcloud on term freq
+\item validate_header_field - returns an error message if an invalid header field name is requested
+\item validate_list_call - returns an error message if a list function is called without a group set or with first > last article numbers
+\item write_temptext - writes fully constructed text message vector to temporary file for posting
 }
 }
 \keyword{internal}

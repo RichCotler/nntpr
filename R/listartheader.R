@@ -8,18 +8,15 @@
 #'
 #' @param first_article_string article number (string)
 #' @param last_article_string number (string)
-#' @param timeout_seconds number of seconds to set withTimeout to, 0 skips withTimeout
 #' @param filter_term_string string (optional, case insensitive)
 #' @export
-listartheader <- function(first_article_string, last_article_string, timeout_seconds,
-    filter_term_string = NULL) {
-    py$svconn <- nntpr.private$gsvconn
+listartheader <- function(first_article_string, last_article_string, filter_term_string = NULL) {
     retmessage <- NULL
     retlist <- NULL
     first_art_info <- NULL
     last_art_info <- NULL
 
-    retmessage <- validate_list_call(first_article_string, last_article_string, timeout_seconds)
+    retmessage <- validate_list_call(first_article_string, last_article_string)
 
     if (is.null(retmessage)) {
         # if no simple error, continue
@@ -34,23 +31,11 @@ listartheader <- function(first_article_string, last_article_string, timeout_sec
         nntpr.private$glastartinfo <- last_art_info
         nntpr.private$gfirstartinfo <- first_art_info
 
-        retmessage <- c("init")
+        retlist <- execute_listhdr_call("xover", first_article_string,
+            last_article_string, filter_term_string)
+    }
 
-        nntpr.private$gexectime <- system.time(if (timeout_seconds > 0) {
-            tryCatch({
-                xoverresult <- withTimeout({
-                  unlist(execute_listhdr_call("xover", first_article_string, last_article_string,
-                    filter_term_string))
-                }, timeout = timeout_seconds, onTimeout = "error")
-            }, TimeoutException = function(err) {
-                nntpr.private$gretmessage <- str_c("Error: listartheader timed out after ",
-                  as.character(timeout_seconds), " seconds.")
-            })
-        } else {
-            xoverresult <- execute_listhdr_call("xover", first_article_string, last_article_string,
-                filter_term_string)
-        })
-        retlist <- py$articlelist
+    if (!is.null(retmessage)) {
         if (str_sub(retmessage, 1, 5) != "Error") {
             retmessage <- str_c("Call returned ", as.character(length(retlist)),
                 " articles in ", getclocktime(), " seconds.")

@@ -22,5 +22,6 @@ Valid utility to call:
 \item artinfo - return 2 item list with first-last article info from last listarticles call
 \item groupinfo - return vector with Group information vector (response, count, first, last, name)
 \item exectime - return string with last stored system.time information collected on nntplib xhdr and xover calls
+\item listfieldnames - return a vector with the valid header field names
 }
 }

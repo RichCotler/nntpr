@@ -17,7 +17,6 @@
 #' @param request_type the nntplib method to execute (article, head, body)
 #' @export
 getanarticle <- function(article_string, request_type) {
-    py$svconn <- nntpr.private$gsvconn
     retmessage <- NULL
     retlist <- NULL
     
@@ -30,18 +29,19 @@ getanarticle <- function(article_string, request_type) {
     }
     
     if (is.null(retmessage)) {
-        tryresult <- try(py_eval(str_c("svconn.", request_type, "('", article_string, 
-            "')")))
+        retlist <- call2python(str_c("svconn.", request_type, "('", article_string, 
+            "')"))
         
-        if (str_sub(tryresult[[1]], 1, 5) != "Error") {
-            retlist <- tryresult
+        if (str_sub(nntpr.private$gretmessage, 1, 5) != "Error") {
             retmessage <- str_c("Returning ", request_type, " for ", groupinfo[[5]], 
                 " article ", article_string)
-        } else {
-            retmessage <- tryresult[[1]]
         }
+    } else {
+        message(retmessage)
     }
+    
     
     nntpr.private$gretmessage <- retmessage
     return(retlist)
 }
+

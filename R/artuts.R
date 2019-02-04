@@ -7,14 +7,14 @@
 #' with starting and ending article numbers and their respective article dates.
 #' @export
 artuts <- function() {
-    py$svconn <- nntpr.private$gsvconn
 
     retlist <- as.list(publicutility("retmessage"))
     artvector <- unlist(publicutility("artinfo"))
     retlist <- list.append(retlist, c("first article", artvector[1], artvector[2]))
     retlist <- list.append(retlist, c("last article", artvector[3], artvector[4]))
     retlist <- list.append(retlist, publicutility("exectime"))
-
+    retlist <- list.append(retlist, publicutility("listfieldnames"))
     return(retlist)
 
 }
+

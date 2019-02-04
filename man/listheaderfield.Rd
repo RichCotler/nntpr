@@ -5,7 +5,7 @@
 \title{listheaderfield Function}
 \usage{
 listheaderfield(header_field_name, first_article_string,
-  last_article_string, timeout_seconds, filter_term_string = NULL)
+  last_article_string, filter_term_string = NULL)
 }
 \arguments{
 \item{header_field_name}{header field name (path, from, subject, newsgroups, user-agent, message-id, x-no-archive, lines, x-complaints-to, nntp-posting-date, organization, bytes, date, x-received-bytes, x-received-body-crc)}
@@ -13,8 +13,6 @@ listheaderfield(header_field_name, first_article_string,
 \item{first_article_string}{number (string)}
 
 \item{last_article_string}{number (string)}
-
-\item{timeout_seconds}{number of seconds to set withTimeout to, 0 skips withTimeout}
 
 \item{filter_term_string}{string (optional, case insensitive)}
 }

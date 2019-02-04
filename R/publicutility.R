@@ -12,6 +12,7 @@
 #' \item artinfo - return 2 item list with first-last article info from last listarticles call
 #' \item groupinfo - return vector with Group information vector (response, count, first, last, name)
 #' \item exectime - return string with last stored system.time information collected on nntplib xhdr and xover calls
+#' \item listfieldnames - return a vector with the valid header field names
 #'}
 #' @param utility_to_call the function you want to invoke
 #' @export
@@ -22,7 +23,8 @@ publicutility <- function(utility_to_call) {
     if (is.null(utility_to_call)) {
         retmessage <- c("Error: Utility to call not specified.")
     } else {
-        valid_utils <- c("help", "retmessage", "artinfo", "groupinfo", "exectime")
+        valid_utils <- c("help", "retmessage", "artinfo", "groupinfo", 
+            "exectime", "listfieldnames")
         if (!is.element(utility_to_call, valid_utils)) {
             retmessage <- str_c("Error: ", utility_to_call, " is not a valid utility to call value.")
         } else if (utility_to_call == "retmessage") {
@@ -33,6 +35,8 @@ publicutility <- function(utility_to_call) {
             retvariable <- getgroupinfo()
         } else if (utility_to_call == "exectime") {
             retvariable <- getexectime()
+        } else if (utility_to_call == "listfieldnames") {
+            retvariable <- validate_header_field("utlistrequest")
         } else {
             retvariable <- str_c("Valid utility to call values: ", paste(valid_utils, 
                 collapse = ", "), ".")  # fall through to help function

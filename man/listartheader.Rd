@@ -4,15 +4,13 @@
 \alias{listartheader}
 \title{listartheader Function}
 \usage{
-listartheader(first_article_string, last_article_string, timeout_seconds,
+listartheader(first_article_string, last_article_string,
   filter_term_string = NULL)
 }
 \arguments{
 \item{first_article_string}{article number (string)}
 
 \item{last_article_string}{number (string)}
-
-\item{timeout_seconds}{number of seconds to set withTimeout to, 0 skips withTimeout}
 
 \item{filter_term_string}{string (optional, case insensitive)}
 }
